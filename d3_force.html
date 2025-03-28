@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="force-style.css">
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+    </head>
+    <body>
+        
+        <!--Fetch the Sliders HTML-->
+        <div id="content"></div>
+
+        <!--File selection for graph-->
+        <div class="file">
+            <p><label>File</label> Select a file to display</p>
+            <input type="file" id="fileInput" accept=".json">
+        </div>
+        <script>fetch('sliders.html', { mode: 'cors' }).then(response => response.text()).then(data => {document.getElementById('content').innerHTML = data;});</script>
+
+        <!--The Displayed SVG-->
+        <svg></svg>
+        
+        <script src="network.js"></script>
+    </body>
+</html>

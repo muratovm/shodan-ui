@@ -1,0 +1,10 @@
+# credential files
+config.yaml
+
+data/*
+# exception to the rule
+!data/.gitkeep 
+
+graphs/*
+# exception to the rule
+!graphs/.gitkeep 
