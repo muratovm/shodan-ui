@@ -1,3 +1,5 @@
+import streamlit as st
+
 @st.cache_data
 def get_profile_dataset(number_of_items: int = 20, seed: int = 0) -> pd.DataFrame:
     new_data = []

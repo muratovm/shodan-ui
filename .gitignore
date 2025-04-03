@@ -1,6 +1,9 @@
 # credential files
 config.yaml
 
+# databases
+*.db
+
 data/*
 # exception to the rule
 !data/.gitkeep 

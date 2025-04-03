@@ -4,7 +4,11 @@ import re
 import json
 import yaml
 import logging
+from api_cache import APICache
 
+st_logger = logging.getLogger('streamlit')
+#turn off st_logger
+st_logger.setLevel(logging.ERROR)
 
 # Configure logging
 logging.basicConfig(
@@ -22,6 +26,7 @@ class ShodanAPI:
             self.save_api_key()
         logging.info(f"Using API key: {self.api_key[:4]}... ")
         self.api = Shodan(self.api_key)
+        self.cache = APICache('api.db')
         logging.info("Shodan API initialized")
 
     def get_key_from_config(self):
@@ -55,6 +60,7 @@ class ShodanAPI:
     def search_and_save_query_results(self, query, columns_to_select=None, batch_size=100) -> list:
         # If no columns are specified, select all columns
         valid_file_name = re.sub(r'[^\w\-_.]','_', query)
+        logging.debug(f"Query: {query}")
         logging.debug(f"File name: {valid_file_name}")
         try:
             offset = 0
@@ -91,6 +97,12 @@ class ShodanAPI:
             with open(f'data/{valid_file_name}.json', 'w') as f:
                 json.dump(data, f, indent=4)
                 logging.debug(f'Query results saved to data/{valid_file_name}.json')
+            
+            #save data to sqlite
+            self.cache.save_results(query, data)
+            logging.debug(f'Query results saved to cache')
+
+
         except Exception as e:
             logging.error(f'Error saving query results: {e}')
             return None
